@@ -1,13 +1,11 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Is Crime Really On A Rise In Toronto? An Analysis of The Past And Current Crime Rates of Toronto"
 author: 
-  - First author
-  - Another author
+  - Adrian Ly
 thanks: "Code and data are available at: LINK."
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "Current mainstream news outlets are pushing a narrative that crime in Toronto is on a rise. "
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -18,20 +16,23 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+library(knitr)
+library(janitor)
+library(lubridate)
+library(opendatatoronto)
 library(tidyverse)
-library(palmerpenguins)
+library(dplyr)
 ```
-
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. 
+You can and should cross-reference sections and sub-sections.
 
 The remainder of this paper is structured as follows. @sec-data....
 
-
-
 # Data {#sec-data}
+
+The data utilized throughout this paper was obtained through the City of Toronto's
 
 Some of our data is of penguins (@fig-bills), from @palmerpenguins.
 
@@ -70,9 +71,7 @@ analysis_data |>
        y = "Wing length (mm)")
 ```
 
-Talk way more about it. 
-
-
+Talk way more about it.
 
 # Model
 
@@ -82,8 +81,13 @@ Here we briefly describe the Bayesian analysis model used to investigate... Back
 
 ## Model set-up
 
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.
 
+$$
+\text{Percentage Change} = \left( \frac{\text{New Value} - \text{Old Value}}{\text{Old Value}} \right) \times 100
+$$
+
+```{=tex}
 \begin{align} 
 y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 \mu_i &= \alpha + \beta_i + \gamma_i\\
@@ -92,9 +96,8 @@ y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 \gamma &\sim \mbox{Normal}(0, 2.5) \\
 \sigma &\sim \mbox{Exponential}(1)
 \end{align}
-
+```
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
 
 ### Model justification
 
@@ -102,47 +105,75 @@ We expect a positive relationship between the size of the wings and time spent a
 
 We can use maths by including latex between dollar signs, for instance $\theta$.
 
-
 # Results
 
-Our results are summarized in @tbl-modelresults.
+Our results are summarized in @fig-avgcrimerates.
 
 ```{r}
+#| label: fig-avgcrimerates
+#| fig-cap: Average Crime Rates
 #| echo: false
-#| eval: true
-#| warning: false
-#| message: false
 
-library(rstanarm)
+# Reading the data
 
-first_model <-
-  readRDS(file = here::here("outputs/models/first_model.rds"))
+average_crime_rates_per_year <- read_csv("outputs/data/average_crime_rates_data.csv")
+
+# Creating the line graph for average crime rates
+ggplot(average_crime_rates_per_year, aes(x = year, y = average_rate, color = crime)) +
+  geom_line() +
+  labs(title = "Average Crime Rates by Type Across Years (2014-2023)",
+       x = "Year",
+       y = "Average Crime Rate",
+       color = "Crime Type") +
+  theme_minimal()
 ```
 
 ```{r}
+#| label: fig-percentagecrimerates
+#| fig-cap: Average Crime Rates
+#| echo: false
+
+# Reading the data
+percentage_change_data <- read_csv("outputs/data/percentage_change_data.csv")
+
+# Creating the line graph for percentage changes
+ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crime)) +
+  geom_line() +
+  labs(title = "Yearly Percentage Change in Average Crime Rates by Type (2014-2023)",
+       x = "Year",
+       y = "Percentage Change in Average Rate",
+       color = "Crime Type") +
+  theme_minimal()
+```
+
+
+```{r}
 #| echo: false
 #| eval: true
-#| label: tbl-modelresults
+#| label: tbl-percentagecrimerates20142023
 #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
+# Reading the data
+final_percentage_change_table <- read.csv("outputs/data/percentage_change_table_2014_2023.csv")
 ```
 
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-percentagecrimerates20222023
+#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| warning: false
 
+percentage_change_table <- read.csv("outputs/data/percentage_change_table_2022_2023.csv")
+```
 
 
 # Discussion
 
 ## First discussion point {#sec-first-point}
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
 
 ## Second discussion point
 
@@ -156,8 +187,7 @@ Weaknesses and next steps should also be included.
 
 \appendix
 
-# Appendix {-}
-
+# Appendix {.unnumbered}
 
 # Additional data details
 
@@ -167,7 +197,7 @@ Weaknesses and next steps should also be included.
 
 In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows...
 
 ```{r}
 #| eval: true
@@ -211,11 +241,6 @@ plot(first_model, "trace")
 plot(first_model, "rhat")
 ```
 
-
-
 \newpage
 
-
 # References
-
-

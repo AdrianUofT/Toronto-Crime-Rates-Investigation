@@ -70,5 +70,50 @@ average_crime_rates_per_year <- long_data |>
   group_by(crime, year) |>
   summarize(average_rate = mean(rate, na.rm = TRUE))
 
+# Calculating the percentage change in the average rate per year for each crime type
+percentage_change_data <- average_crime_rates_per_year |>
+  group_by(crime) |>
+  # We want to compare the current avg rate with the previous avg rate to get
+  # our rate change
+  mutate(percentage_change = (average_rate / lag(average_rate) - 1) * 100) |>
+  na.omit() # Remove any NA values that may occur
+
+# Calculating the average crime rate for each crime type in the first and last years
+first_year <- min(long_data$year)
+last_year <- max(long_data$year)
+
+average_rates_first_last_years <- long_data |>
+  filter(year == first_year | year == last_year) |>
+  group_by(crime, year) |>
+  summarize(average_rate = mean(rate, na.rm = TRUE)) |>
+  spread(year, average_rate)
+
+# Calculating the percentage change from first year to last year for each crime type
+final_percentage_change <- average_rates_first_last_years |>
+  mutate(percentage_change = ((`last_year` - `first_year`)/`first_year`) * 100)
+
+# Selecting only relevant columns for the table
+final_percentage_change_table <- final_percentage_change |>
+  select(crime, percentage_change)
+
+# Calculating the average crime rate for each crime type in 2022 and 2023
+average_rates_2022_2023 <- long_data %>%
+  filter(year == 2022 | year == 2023) %>%
+  group_by(crime, year) %>%
+  summarize(average_rate = mean(rate, na.rm = TRUE)) %>%
+  spread(year, average_rate)
+
+# Calculating the percentage change from 2022 to 2023 for each crime type
+percentage_change_2022_2023 <- average_rates_2022_2023 %>%
+  mutate(percentage_change = ((`2023` - `2022`)/`2022`) * 100)
+
+# Selecting only relevant columns for the table
+percentage_change_table <- percentage_change_2022_2023 %>%
+  select(crime, percentage_change)
+
 #### Save data ####
-write_csv(average_crime_rates_per_year, "outputs/data/analysis_data.csv")
+write_csv(average_crime_rates_per_year, "outputs/data/average_crime_rates_data.csv")
+write_csv(percentage_change_data, "outputs/data/percentage_change_data.csv")
+write.csv(final_percentage_change_table, "outputs/data/percentage_change_table_2014_2023.csv")
+write.csv(percentage_change_table, "outputs/data/percentage_change_table_2022_2023.csv")
+
