@@ -27,8 +27,6 @@ crime_rates <-
 
 
 #### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
 write_csv(crime_rates, "inputs/data/crime_rates.csv") 
 
          

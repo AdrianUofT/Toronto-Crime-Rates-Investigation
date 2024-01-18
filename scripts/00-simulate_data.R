@@ -21,7 +21,7 @@ library(dplyr)
 set.seed(123) # Setting a seed for reproducibility
 
 # Define crime types
-crime_types <- c("assault", "autotheft", "robbery", "biketheft", "breakenter", 
+crime_types <- c("assault", "autotheft", "biketheft", "breakenter", 
                  "homicide", "robbery", "shooting", "theftfrommv", 
                  "theftover")
 
@@ -35,8 +35,9 @@ simulated_crime_data <-
     year = rep(years, times = length(crime_types)),
     average_rate = runif(n = length(years) * length(crime_types), min = 0, max = 1000) # Random rates between 0 and 1000
   )
- 
+
 head(simulated_crime_data)
 
+write_csv(simulated_crime_data, "inputs/data/simulated_crime_data.csv") 
 
 
