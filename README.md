@@ -26,8 +26,8 @@ Using R, we conducted a comprehensive analysis of the crime rates. Our approach 
 # 6. Conclusion
 Our findings provide insights into the crime trends in Toronto. Detailed conclusions are presented in the final report, including any correlations found between different types of crimes, temporal changes, and recommendations for future studies.
 # Tools Used
-R Language: For data cleaning, manipulation, simulation, testing, and analysis.
-R Libraries: Key packages like dplyr, tidyr, ggplot2 were extensively used for efficient data handling and visualization.
+* R Language: For data cleaning, manipulation, simulation, testing, and analysis.
+* R Libraries: Key packages like dplyr, tidyverse, opendatatoronto, lubridate, janitor, and knitr were extensively used for efficient data handling and visualization.
 # Repository Structure
 * /inputs/skteches: Contains sketches for the datasets.
 * /inputs/data: Contains raw and simulated datasets.
