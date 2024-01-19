@@ -2,10 +2,10 @@
 title: "Is Crime Really On A Rise In Toronto? An Analysis of The Past And Current Crime Rates of Toronto"
 author: 
   - Adrian Ly
-thanks: "Code and data are available at: LINK."
+thanks: "Code and data analysis are available at: https://github.com/AdrianUofT/Toronto-Crime-Rates-Investigation.git"
 date: today
 date-format: long
-abstract: "Current mainstream news outlets are pushing a narrative that crime in Toronto is on a rise. "
+abstract: "Current mainstream news outlets are pushing a narrative that crime in Toronto is on a rise. Overall crime rates when looking from a macro scale perspective does seem to be increasing on average of about 0.43%, with the micro scale showcasing some crimes such as homicide to have an increase of almost 180%. Using data from OpenDataToronto, this paper serves to present an unbiased review of the current crime rates in Toronto and to reduce any fearmongering that may occur when someone reads a headline. This paper reveals that while crime is technically on a rise, this \"increase\" in crime rate does not necessairly correlate to something worth pointing out."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -86,6 +86,7 @@ Our results are summarized in @fig-avgcrimerates.
 #| label: fig-avgcrimerates
 #| fig-cap: Average Crime Rates
 #| echo: false
+#| message: false
 
 # Reading the data
 
@@ -105,6 +106,7 @@ ggplot(average_crime_rates_per_year, aes(x = year, y = average_rate, color = cri
 #| label: fig-percentagecrimerates
 #| fig-cap: Average Crime Rates
 #| echo: false
+#| message: false
 
 # Reading the data
 percentage_change_data <- read_csv(here::here("outputs/data/percentage_change_data.csv"))
@@ -129,6 +131,8 @@ ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crim
 
 # Reading the data
 final_percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2014_2023.csv"))
+
+final_percentage_change_table |> kable()
 ```
 
 ```{r}
@@ -139,6 +143,8 @@ final_percentage_change_table <- read.csv(here::here("outputs/data/percentage_ch
 #| warning: false
 
 percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2022_2023.csv"))
+
+percentage_change_table |> kable()
 ```
 
 
@@ -175,9 +181,9 @@ In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. Th
 
 ## Diagnostics
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
+ is a trace plot. It shows... This suggests...
 
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+ is a Rhat plot. It shows... This suggests...
 
 
 

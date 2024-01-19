@@ -1,4 +1,4 @@
-# Toronto-Crime-Rates-Investigation
+# Is Crime Really On A Rise In Toronto? An Analysis of The Past And Current Crime Rates of Toronto
 
 This README was generated using ChatGPT
 
