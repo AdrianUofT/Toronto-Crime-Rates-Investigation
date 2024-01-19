@@ -97,18 +97,18 @@ final_percentage_change_table <- final_percentage_change |>
   select(crime, percentage_change)
 
 # Calculating the average crime rate for each crime type in 2022 and 2023
-average_rates_2022_2023 <- long_data %>%
-  filter(year == 2022 | year == 2023) %>%
-  group_by(crime, year) %>%
-  summarize(average_rate = mean(rate, na.rm = TRUE)) %>%
+average_rates_2022_2023 <- long_data |>
+  filter(year == 2022 | year == 2023) |>
+  group_by(crime, year) |>
+  summarize(average_rate = mean(rate, na.rm = TRUE)) |>
   spread(year, average_rate)
 
 # Calculating the percentage change from 2022 to 2023 for each crime type
-percentage_change_2022_2023 <- average_rates_2022_2023 %>%
+percentage_change_2022_2023 <- average_rates_2022_2023 |>
   mutate(percentage_change = ((`2023` - `2022`)/`2022`) * 100)
 
 # Selecting only relevant columns for the table
-percentage_change_table <- percentage_change_2022_2023 %>%
+percentage_change_table <- percentage_change_2022_2023 |>
   select(crime, percentage_change)
 
 #### Save data ####

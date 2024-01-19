@@ -32,19 +32,8 @@ The remainder of this paper is structured as follows. @sec-data....
 
 # Data {#sec-data}
 
-The data utilized throughout this paper was obtained through the City of Toronto's
+The data utilized throughout this paper was obtained through the City of Toronto's OpenDataToronto [@citeOpenDataToronto]. The specific data set that was used is entitled 'Neighbourhood Crime Rates, 2023' [@citeData]. Data was collected and analyzed through the statistical program 'R' [@citeR]
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
-
-
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-
-
-Talk way more about it.
 
 # Model
 
@@ -70,7 +59,7 @@ y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 \sigma &\sim \mbox{Exponential}(1)
 \end{align}
 ```
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+We run the model in R [@citeR] using the `rstanarm` package of . We use the default priors from `rstanarm`.
 
 ### Model justification
 
@@ -121,7 +110,6 @@ ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crim
   theme_minimal()
 ```
 
-
 ```{r}
 #| echo: false
 #| eval: true
@@ -132,7 +120,9 @@ ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crim
 # Reading the data
 final_percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2014_2023.csv"))
 
-final_percentage_change_table |> kable()
+colnames(final_percentage_change_table) <- c("X", "Crime", "Percentage Change")
+
+final_percentage_change_table |> select("Crime", "Percentage Change") |> kable()
 ```
 
 ```{r}
@@ -144,9 +134,9 @@ final_percentage_change_table |> kable()
 
 percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2022_2023.csv"))
 
-percentage_change_table |> kable()
+colnames(percentage_change_table) <- c("X", "Crime", "Percentage Change")
+percentage_change_table |> select("Crime", "Percentage Change") |> kable()
 ```
-
 
 # Discussion
 
@@ -174,18 +164,15 @@ Weaknesses and next steps should also be included.
 
 ## Posterior predictive check
 
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
+In we implement a posterior predictive check. This shows...
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows...
-
+In we compare the posterior with the prior. This shows...
 
 ## Diagnostics
 
- is a trace plot. It shows... This suggests...
+is a trace plot. It shows... This suggests...
 
- is a Rhat plot. It shows... This suggests...
-
-
+is a Rhat plot. It shows... This suggests...
 
 \newpage
 
