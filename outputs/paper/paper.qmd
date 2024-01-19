@@ -36,40 +36,13 @@ The data utilized throughout this paper was obtained through the City of Toronto
 
 Some of our data is of penguins (@fig-bills), from @palmerpenguins.
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
 
 Talk more about it.
 
 And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
 
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
 
-analysis_data <- read_csv(here::here("outputs/data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
 
 Talk way more about it.
 
@@ -116,7 +89,7 @@ Our results are summarized in @fig-avgcrimerates.
 
 # Reading the data
 
-average_crime_rates_per_year <- read_csv("outputs/data/average_crime_rates_data.csv")
+average_crime_rates_per_year <- read_csv(here::here("outputs/data/average_crime_rates_data.csv"))
 
 # Creating the line graph for average crime rates
 ggplot(average_crime_rates_per_year, aes(x = year, y = average_rate, color = crime)) +
@@ -134,7 +107,7 @@ ggplot(average_crime_rates_per_year, aes(x = year, y = average_rate, color = cri
 #| echo: false
 
 # Reading the data
-percentage_change_data <- read_csv("outputs/data/percentage_change_data.csv")
+percentage_change_data <- read_csv(here::here("outputs/data/percentage_change_data.csv"))
 
 # Creating the line graph for percentage changes
 ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crime)) +
@@ -155,7 +128,7 @@ ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crim
 #| warning: false
 
 # Reading the data
-final_percentage_change_table <- read.csv("outputs/data/percentage_change_table_2014_2023.csv")
+final_percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2014_2023.csv"))
 ```
 
 ```{r}
@@ -165,7 +138,7 @@ final_percentage_change_table <- read.csv("outputs/data/percentage_change_table_
 #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
 
-percentage_change_table <- read.csv("outputs/data/percentage_change_table_2022_2023.csv")
+percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2022_2023.csv"))
 ```
 
 
@@ -199,26 +172,6 @@ In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. 
 
 In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows...
 
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
 
 ## Diagnostics
 
@@ -226,20 +179,7 @@ posterior_vs_prior(first_model) +
 
 @fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
 
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
 
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
 
 \newpage
 
