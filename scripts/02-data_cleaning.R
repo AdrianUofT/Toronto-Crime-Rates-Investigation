@@ -79,18 +79,15 @@ percentage_change_data <- average_crime_rates_per_year |>
   na.omit() # Remove any NA values that may occur
 
 # Calculating the average crime rate for each crime type in the first and last years
-first_year <- min(long_data$year)
-last_year <- max(long_data$year)
-
 average_rates_first_last_years <- long_data |>
-  filter(year == first_year | year == last_year) |>
+  filter(year == 2014 | year == 2023) |>
   group_by(crime, year) |>
   summarize(average_rate = mean(rate, na.rm = TRUE)) |>
   spread(year, average_rate)
 
 # Calculating the percentage change from first year to last year for each crime type
 final_percentage_change <- average_rates_first_last_years |>
-  mutate(percentage_change = ((`last_year` - `first_year`)/`first_year`) * 100)
+  mutate(percentage_change = ((`2023` - `2014`)/`2014`) * 100)
 
 # Selecting only relevant columns for the table
 final_percentage_change_table <- final_percentage_change |>
@@ -112,6 +109,7 @@ percentage_change_table <- percentage_change_2022_2023 |>
   select(crime, percentage_change)
 
 #### Save data ####
+write_csv(long_data, "outputs/data/cleaned_crime_rates_data.csv")
 write_csv(average_crime_rates_per_year, "outputs/data/average_crime_rates_data.csv")
 write_csv(percentage_change_data, "outputs/data/percentage_change_data.csv")
 write.csv(final_percentage_change_table, "outputs/data/percentage_change_table_2014_2023.csv")

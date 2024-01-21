@@ -5,7 +5,7 @@ author:
 thanks: "Code and data analysis are available at: https://github.com/AdrianUofT/Toronto-Crime-Rates-Investigation.git"
 date: today
 date-format: long
-abstract: "Current mainstream news outlets are pushing a narrative that crime in Toronto is on a rise. Overall crime rates when looking from a macro scale perspective does seem to be increasing on average of about 0.43%, with the micro scale showcasing some crimes such as homicide to have an increase of almost 180%. Using data from OpenDataToronto, this paper serves to present an unbiased review of the current crime rates in Toronto and to reduce any fearmongering that may occur when someone reads a headline. This paper reveals that while crime is technically on a rise, this \"increase\" in crime rate does not necessairly correlate to something worth pointing out."
+abstract: "Current mainstream news outlets are reporting a significant increase in crime rates, a trend that from our data analysis supports. Our findings indicate a dramatic increase in crimes such as homicide and autotheft, with them increasing over 210% from 2014. Comparing from 2022, homicide rates have escalted over 180% with autotheft having an increase of 20%. These substanistal increases in crime rate underscore a evergrowing concern around public safety in Toronto and highlight the urgent need for effective crime prevention strategies."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -16,13 +16,22 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+#### Work space set-up ####
 library(knitr)
 library(janitor)
 library(lubridate)
 library(opendatatoronto)
 library(tidyverse)
 library(dplyr)
+
+# Reading in data
+cleaned_crime_rates_data <- read_csv(here::here("outputs/data/cleaned_crime_rates_data.csv"))
+average_crime_rates_per_year <- read_csv(here::here("outputs/data/average_crime_rates_data.csv"))
+percentage_change_data <- read_csv(here::here("outputs/data/percentage_change_data.csv"))
+final_percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2014_2023.csv"))
+percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2022_2023.csv"))
 ```
+
 
 # Introduction
 
@@ -32,54 +41,51 @@ The remainder of this paper is structured as follows. @sec-data....
 
 # Data {#sec-data}
 
-The data utilized throughout this paper was obtained through the City of Toronto's OpenDataToronto [@citeOpenDataToronto]. The specific data set that was used is entitled 'Neighbourhood Crime Rates, 2023' [@citeData]. Data was collected and analyzed through the statistical program 'R' [@citeR]
+The data utilized throughout this paper was obtained through the City of Toronto's `opendatatoronto` [@citeOpenDataToronto]. The specific data set that was used is entitled `Neighbourhood Crime Rates, 2023` [@citeData]. Data was collected and analyzed through the statistical program `R` [@citeR], with additional support from `tidyverse` [@citeTidyverse], `ggplot2` [@citeGGPlot2], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `tibble` [@citeTibble], `readr` [@citeReadR], `stringr` [@citeStringR], and `kableExtra` [@citeKable]. Further discussion of data colelction, cleaning, and analysis process can be found later in this paper. 
+
+## Neighbourhood Crime Rate Statistics {#sec-data2}
+
+This data set was published by the Toronto Police Services. It outlines the various different crime data by neighbourhood. That is, for each neighbourhood, the data set shows the associated area name, its hood ID, the population for said area, followed by the type of crime and number of times said crime has been committed for a specific year. The main crimes being analyzed here are assault, auto theft, bike theft, break and enter, robbery, theft over, theft from motor vehicle, homicide, and shooting & firearm discharges. The data set also includes the crime rate per 100,000 population. That is, it calculates the crime count per 100,000 population per year. It is to be noted that for some areas, some crime data may be listed as "NA". 
+
+Any other types of crime are not represented in this data set and are deemed to be outside the scope of this paper. This data set was last freshed on January 14, 2024 and was captured for this paper on January 16, 2024. I conducted the first step of cleaning the data to omit any NA values, simplifying the names of columns, eliminating any additional columns and re-factoring the data (see @tbl-crimedata).
+
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-crimedata
+#| tbl-cap: "Sample of Cleaned Neighbourhood Crime Rate Statistics Data"
+#| warning: false
 
 
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.
-
-$$
-\text{Percentage Change} = \left( \frac{\text{New Value} - \text{Old Value}}{\text{Old Value}} \right) \times 100
-$$
-
-```{=tex}
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
+head(cleaned_crime_rates_data) |> kable(col.names = c("Crime", "Year", "Crime Rate"))
 ```
-We run the model in R [@citeR] using the `rstanarm` package of . We use the default priors from `rstanarm`.
 
-### Model justification
+## Average Crime Rate
 
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
+Using the cleaned crime rate data set, I created a script using the `group_by` function which first allowed me to first group the data by type of crime and year. Then using the `summarize` function, I was able to calculate the average the average crime rate for each crime per year (see @tbl-avgcrimedata).
 
-We can use maths by including latex between dollar signs, for instance $\theta$.
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-avgcrimedata
+#| tbl-cap: "Sample of Average Crime Rate Statistics Data"
+#| warning: false
+
+
+head(average_crime_rates_per_year) |> kable(col.names = c("Crime", "Year", "Average Crime Rate"))
+```
 
 # Results
 
-Our results are summarized in @fig-avgcrimerates.
+## Average Yearly Crime Rate
+
+Our results of the average crime rate for all of the neighborhoods in Toronto, from 2014-2023, for each type of crime is summarized in @fig-avgcrimerates. As of January 14, 2024, out of the 158 different neighborhoods, the crime with the highest average crime rate is assault with an average crime rate of 806 crimes per 100,000 population. The lowest being homicides with an average of 7.6 crimes per 100,000 population. 
 
 ```{r}
 #| label: fig-avgcrimerates
-#| fig-cap: Average Crime Rates
+#| fig-cap: Average Crime Rates by Type Across Years (2014-2023)
 #| echo: false
 #| message: false
-
-# Reading the data
-
-average_crime_rates_per_year <- read_csv(here::here("outputs/data/average_crime_rates_data.csv"))
 
 # Creating the line graph for average crime rates
 ggplot(average_crime_rates_per_year, aes(x = year, y = average_rate, color = crime)) +
@@ -91,34 +97,27 @@ ggplot(average_crime_rates_per_year, aes(x = year, y = average_rate, color = cri
   theme_minimal()
 ```
 
-```{r}
-#| label: fig-percentagecrimerates
-#| fig-cap: Average Crime Rates
-#| echo: false
-#| message: false
+## Percentage Change in Average Crime Rates
 
-# Reading the data
-percentage_change_data <- read_csv(here::here("outputs/data/percentage_change_data.csv"))
+Further breaking down this data allows us to focus on the trends of crime rates over a specified period and determining the percentage change in the average crime rate to give us an insight into how crime patterns have evolved. 
 
-# Creating the line graph for percentage changes
-ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crime)) +
-  geom_line() +
-  labs(title = "Yearly Percentage Change in Average Crime Rates by Type (2014-2023)",
-       x = "Year",
-       y = "Percentage Change in Average Rate",
-       color = "Crime Type") +
-  theme_minimal()
-```
+### Calcuating the Percentage Change in Average Crime Rate
+
+Given our data set, we computed the percentage change of the average yearly crime rate and analyzed the year-over-year percentage change in these rates. The percentage change was computed using the following formula:
+
+$$
+\text{Percentage Change} = \left( \frac{\text{New Value} - \text{Old Value}}{\text{Old Value}} \right) \times 100
+$$
+
+Using the `mutate` function, I was able to calculate the percentage change on a year-over-year basis of the average yearly crime rate for each different type of crime. @tbl-percentagecrimerates20142023 shows the percentage change for each crime when comparing the years 2014 and 2023. Notably, we can see that both auto theft and homicide has increased over 210% while crimes such as robbery and theft from motor vehicle have both decreased ~24% and ~21% respectively. @tbl-percentagecrimerates20222023 shows how homicide is now up 180% while robbery is now up 11% with theft from motor vehicle only down 7%. For a full picture, @fig-percentagecrimerates details the percentage changes on a year-over-year basis. 
+
 
 ```{r}
 #| echo: false
 #| eval: true
 #| label: tbl-percentagecrimerates20142023
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| tbl-cap: "Percentage Changes in Average Yearly Crime Rate from 2014 to 2023"
 #| warning: false
-
-# Reading the data
-final_percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2014_2023.csv"))
 
 colnames(final_percentage_change_table) <- c("X", "Crime", "Percentage Change")
 
@@ -129,51 +128,39 @@ final_percentage_change_table |> select("Crime", "Percentage Change") |> kable()
 #| echo: false
 #| eval: true
 #| label: tbl-percentagecrimerates20222023
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| tbl-cap: "Percentage Changes in Average Yearly Crime Rate from 2022 to 2023"
 #| warning: false
-
-percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_table_2022_2023.csv"))
 
 colnames(percentage_change_table) <- c("X", "Crime", "Percentage Change")
 percentage_change_table |> select("Crime", "Percentage Change") |> kable()
 ```
 
+```{r}
+#| label: fig-percentagecrimerates
+#| fig-cap: Yearly Percentage Change in Average Crime Rates by Type (2014-2023)
+#| echo: false
+#| message: false
+
+# Creating the line graph for percentage changes
+ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crime)) +
+  geom_line() +
+  labs(title = str_wrap("Yearly Percentage Change in Average Crime Rates by Type (2014-2023)", width = 40),
+       x = "Year",
+       y = "Percentage Change in Average Rate",
+       color = "Crime Type") +
+  theme_minimal()
+```
+
 # Discussion
 
-## First discussion point {#sec-first-point}
+Overall, the data reveals that there is a significant upward trend of crime rates, more particularly in homicide and auto theft rates. The data indicates an over 210% increase in homicide rates with a more notable spike of 180% in the last year. Similarly, we have auto theft rising by 20% from last year. If we were to factor in all of the crime rates in our data set, the overall crime rate increase in the last year is about ~32%. These findings are in alignment with recent reports from various news outlets that suggest a growing trend in criminal activity. The [National Post](https://nationalpost.com/news/canada/violent-crime-rose-again-in-2022-murder-rate-highest-in-30-years-statcan) stating 'murder rate highest in 30 years' [@citearticle3], [CP24](https://www.cp24.com/news/toronto-saw-15-per-cent-increase-in-its-violent-crime-index-in-2022-more-than-three-times-the-jump-seen-nationally-statscan-1.6498269?cache=yesclipId10406200text%2Fhtml%3Bcharset%3Dutf-80404%2F7.258454%2F7.632243%2F7.243626%2F7.243626%2F7.243626) claiming that 'Toronto saw 15 per cent increase in its violent crime index in 2022' [@citearticle1], or the [CBC](https://www.cbc.ca/news/canada/toronto/auto-theft-stories-toronto-2023-1.7060776#:~:text=In%20Toronto%20proper%2C%20vehicle%20thefts,jump%20in%202022%20from%202021.) saying that 'vehicle thefts were up some 25.4 per cent over 2022' [@citearticle2]. 
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
+As to the reason why crime rates are on the rise, there isn't necessarily a clear answer. What would someone's motive be for committing a crime in the first place? This could be down to numerous different factors. Some factors that could be contributing to this trend could be socio-economic factors. For example income inequality, unemployment, high costs of living, etc. which are major prevailing problems that all Canadians, not just specifically people living in Toronto, in the last few years has experienced to some degree. Another factor could be the societal attitude towards crime. If someone were to commit a crime, there is obviously an incentive to do so. In the case of auto theft, thieves can get away with stealing an entire car and then selling it over-seas. The point to highlight here is they can get away with doing said crime. If the incentive to commit the crime far out-weighs any potential punishment for said crime, then it gives criminals the encouragement to do the crime and more importantly repeat doing so. This increase in crime rate calls for an urgent review of our current crime prevention and law enforcement strategies.
 
-## Second discussion point
 
-## Third discussion point
+There are several limitations to this analysis 
+# Conclusion
 
-## Weaknesses and next steps
-
-Weaknesses and next steps should also be included.
-
-\newpage
-
-\appendix
-
-# Appendix {.unnumbered}
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In we implement a posterior predictive check. This shows...
-
-In we compare the posterior with the prior. This shows...
-
-## Diagnostics
-
-is a trace plot. It shows... This suggests...
-
-is a Rhat plot. It shows... This suggests...
-
-\newpage
+This paper investigated the 
 
 # References
