@@ -1,6 +1,6 @@
 # Is Crime Really On A Rise In Toronto? An Analysis of The Past And Current Crime Rates of Toronto
 
-This README was generated using ChatGPT
+**Statement on LLM usage: Aspects of the code were written with the help of ChatGPT. The README you are currently reading were written with the help of ChatGPT and the entire chat history is available in `inputs/llms/usage.txt`**
 
 # Overview
 This repository contains the work of our investigation into the crime rates in Toronto. Our goal was to analyze various types of crime data from the years 2014 to 2023 to identify trends and draw conclusions about the safety and security in Toronto.

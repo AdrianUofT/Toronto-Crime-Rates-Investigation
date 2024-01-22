@@ -1,7 +1,6 @@
 LLM: ChatGPT-4.
 Date: 17 January 2024
 
-
 User
 can you create an informative README for a github repo talking about how we are investigating the crime rate in toronto and how we simulated the data, downloaded the data from a website, cleaned the data, tested the data, and came to a conclusion about the crime rates using R
 
@@ -51,3 +50,37 @@ Contact
 For any queries or further information, please contact [Your Contact Information].
 
 This README provides a comprehensive overview of the project, outlining the methodologies and tools used. It guides potential contributors and users through the project's structure and usage.
+
+LLM: ChatGPT-4.
+Date: 17 January 2024
+
+User: User
+Suppose that I am using the pivot_longer function in R and I have a datatset  with columns like `sales_2020`, `sales_2021`, `cost_2020`, `cost_2021` how can I capture different parts of the column names? That is I want to be able to have it seperate it into a category and year. Sort of like I want to have it first look for a sequence of characters that isnt a _ and then capture a sequence of 4 numbers 
+
+ChatGPT: In R, using the pivot_longer() function from the tidyr package, you can reshape your data while capturing different parts of your column names. To separate your column names into category and year, you can use a regular expression in the names_pattern argument.
+
+Given your column names like sales_2020, sales_2021, cost_2020, cost_2021, you want to capture everything before the underscore (_) as category and the four-digit number as year. Here's how you can do it:
+
+R
+Copy code
+library(tidyr)
+
+# Assuming your data frame is named df
+df_long <- pivot_longer(df, 
+                        cols = starts_with("sales_") | starts_with("cost_"),
+                        names_to = c("category", "year"),
+                        names_pattern = "([^_]+)_(\\d{4})"
+                       )
+Explanation:
+
+cols = starts_with("sales_") | starts_with("cost_"): This selects columns starting with "sales_" or "cost_". You can adjust this as needed.
+names_to = c("category", "year"): This specifies that we want to split the column names into two parts - category and year.
+names_pattern = "([^_]+)_(\\d{4})": This is a regular expression where ([^_]+) captures any sequence of characters that are not an underscore (representing the category like 'sales' or 'cost'), and (\\d{4}) captures a sequence of 4 digits (representing the year).
+This code will transform your wide format data into a long format, with separate columns for category (like sales, cost) and year (like 2020, 2021).
+
+
+
+
+
+
+
