@@ -6,7 +6,7 @@
 This repository contains the work of our investigation into the crime rates in Toronto. Our goal was to analyze various types of crime data from the years 2014 to 2023 to identify trends and draw conclusions about the safety and security in Toronto.
 
 ## Data Source
-The dataset was sourced from a publicly available database [link](https://open.toronto.ca/dataset/neighbourhood-crime-rates/), providing detailed information on different types of crimes reported in Toronto.
+The dataset was sourced from a publicly available [database](https://open.toronto.ca/dataset/neighbourhood-crime-rates/), providing detailed information on different types of crimes reported in Toronto.
 
 ## Methodology
 Our analysis involved several key steps:
@@ -28,7 +28,7 @@ Our findings provide insights into the crime trends in Toronto. Detailed conclus
 ## Tools Used
 * R Language: For data cleaning, manipulation, simulation, testing, and analysis.
 * R Libraries: Key packages like dplyr, tidyverse, opendatatoronto, lubridate, janitor, and knitr were extensively used for efficient data handling and visualization.
-# Repository Structure
+## Repository Structure
 * /inputs/sketches: Contains sketches for the datasets.
 * /inputs/data: Contains raw and simulated datasets.
 * /inputs/llm: Contains LLM usage.
@@ -36,14 +36,14 @@ Our findings provide insights into the crime trends in Toronto. Detailed conclus
 * /outputs/paper: Documentation and final analysis report.
 * /scripts: R scripts used for data processing and analysis.
 
-# How to Use
+## How to Use
 Clone the repository.
 Install R and necessary packages.
 Run the scripts in the /scripts directory to replicate the analysis.
 
-# License
+## License
 This project is licensed under the MIT License.
 
-# Contact
+## Contact
 For any queries or further information, please contact adrian.ly@mail.utoronto.ca
 
