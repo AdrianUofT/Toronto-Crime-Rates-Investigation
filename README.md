@@ -29,12 +29,12 @@ Our findings provide insights into the crime trends in Toronto. Detailed conclus
 * R Language: For data cleaning, manipulation, simulation, testing, and analysis.
 * R Libraries: Key packages like dplyr, tidyverse, opendatatoronto, lubridate, janitor, and knitr were extensively used for efficient data handling and visualization.
 ## Repository Structure
-* /inputs/sketches: Contains sketches for the datasets.
-* /inputs/data: Contains raw and simulated datasets.
-* /inputs/llm: Contains LLM usage.
-* /outputs/data: Contains cleaned datasets.
-* /outputs/paper: Documentation and final analysis report.
-* /scripts: R scripts used for data processing and analysis.
+* '/inputs/sketches': Contains sketches for the datasets.
+* '/inputs/data': Contains raw and simulated datasets.
+* '/inputs/llm': Contains LLM usage.
+* '/outputs/data': Contains cleaned datasets.
+* '/outputs/paper': Documentation and final analysis report.
+* '/scripts': R scripts used for data processing and analysis.
 
 ## How to Use
 Clone the repository.
