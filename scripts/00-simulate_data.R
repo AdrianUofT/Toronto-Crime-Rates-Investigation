@@ -5,9 +5,6 @@
 # Date: 16 January 2024
 # Contact: adrian.ly@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
-
 
 #### Workspace setup ####
 library(knitr)

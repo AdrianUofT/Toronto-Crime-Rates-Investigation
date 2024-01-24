@@ -5,7 +5,7 @@ author:
 thanks: "Code and data analysis are available at: https://github.com/AdrianUofT/Toronto-Crime-Rates-Investigation.git"
 date: today
 date-format: long
-abstract: "Current mainstream news outlets are reporting a significant increase in crime rates, a trend that from our data analysis supports. Our findings indicate a dramatic increase in crimes such as homicide and auto theft, with them increasing over 210% from 2014. Compared to 2022, homicide rates have escalated by over 180% with auto theft having an increase of 20%. These substantial increases in crime rate underscore an evergrowing concern around public safety in Toronto and highlight the urgent need for effective crime prevention strategies."
+abstract: "Current mainstream news outlets are reporting a significant increase in crime rates, a trend that our data analysis supports. Our findings indicate a dramatic increase in crimes such as homicide and auto theft, with them increasing over 210% from 2014. Compared to 2022, homicide rates have escalated by over 180% with auto theft having an increase of 20%. These substantial increases in crime rate underscore an evergrowing concern around public safety in Toronto and highlight the urgent need for effective crime prevention strategies."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -36,7 +36,7 @@ percentage_change_table <- read.csv(here::here("outputs/data/percentage_change_t
 
 # Introduction
 
-Over the recent years, major news outlets have been increasingly focused on the trends and patterns of crime rates in our city, Toronto. The narrative of a major increase in overall crime is sparking debate and concern over the general public's safety. This has caused a comprehensive analysis to understand the nature of these trends. To dissect and interpret crime data, this paper focuses on various types of crime to provide an objective view of how crime patterns and trends have evolved. More specifically, our analysis focuses on more petty thefts such as bike theft to more serious crimes such as homicide and auto theft. We examine the data from 2014 to 2023 seeking to uncover the underlying trends and percentage increases or decreases in crime rates. The goal is to offer a clear, data-driven perspective beyond anecdotal evidence and media narratives. Understanding these trends is not only important to inform the general public about them but also to point the direction for law enforcement and policymakers to make imperative choices to combat these criminals. This paper is structured into the following sections: Data, Results, Discussion, and Conclusion. In the data section I discuss the nature of these crime rates obtained from the City of Toronto's `opendatatoronto` [@citeOpenDataToronto] library, and the steps I took to clean and analyze the data. The result section highlights the trends found in the analysis process. The discussion section provides further evaluation of the trends and serves to provide insight as to the potential reasoning behind these crime trends and possible areas that require more attention. Lastly, the conclusion section is to summarize the main findings of this paper. 
+Over the recent years, major news outlets have been increasingly focused on the trends and patterns of crime rates in our city, Toronto. The narrative of a major increase in overall crime is sparking debate and concern over the general public's safety. This has caused a comprehensive analysis to understand the nature of these trends. To dissect and interpret crime data, this paper focuses on various types of crime to provide an objective view of how crime patterns and trends have evolved. More specifically, our analysis focuses on more petty thefts such as bike theft to more serious crimes such as homicide and auto theft. We examine the data from 2014 to 2023 seeking to uncover the underlying trends and percentage increases or decreases in crime rates. The goal is to offer a clear, data-driven perspective beyond anecdotal evidence and media narratives. Understanding these trends is not only important to inform the general public about them but also to point the direction for law enforcement and policymakers to make imperative choices to combat these criminals. This paper is structured into the following sections: Data, Results, Discussion, and Conclusion. In @sec-data, I discuss the nature of these crime rates obtained from the City of Toronto's `opendatatoronto` [@citeOpenDataToronto] library, and the steps I took to clean and analyze the data. @sec-results highlights the trends found in the analysis process. @sec-discussion provides further evaluation of the trends and serves to provide insight as to the potential reasoning behind these crime trends and possible areas that require more attention. Lastly, @sec-conclusion is to summarize the main findings of this paper. 
 
 # Data {#sec-data}
 
@@ -74,7 +74,7 @@ Using the cleaned crime rate data set, I created a script using the `group_by` f
 head(average_crime_rates_per_year) |> kable(col.names = c("Crime", "Year", "Average Crime Rate"), digits = 2)
 ```
 
-# Results
+# Results {#sec-results}
 
 ## Average Yearly Crime Rate
 
@@ -86,14 +86,19 @@ Our results of the average crime rate for all of the neighborhoods in Toronto, f
 #| echo: false
 #| message: false
 
-# Creating the line graph for average crime rates
+# Changing the names on the graph legend
+average_crime_rates_per_year$crime <- factor(average_crime_rates_per_year$crime,
+                                             levels = c("assault", "autotheft", "biketheft", "breakenter", "homicide", "robbery", "shooting", "theftfrommv", "theftover"),
+                                             labels = c("Assault", "Auto Theft", "Bike Theft", "Break and Enter", "Homicide", "Robbery", "Shooting", "Theft from Motor Vehicle", "Theft over"))
+
+# Creating the line graph with updated legend names
 ggplot(average_crime_rates_per_year, aes(x = year, y = average_rate, color = crime)) +
   geom_line() +
   labs(title = "Average Crime Rates by Type Across Years (2014-2023)",
        x = "Year",
        y = "Average Crime Rate",
        color = "Crime Type") +
-  theme_minimal()
+  theme_minimal() 
 ```
 
 ## Percentage Change in Average Crime Rates
@@ -140,6 +145,11 @@ percentage_change_table |> select("Crime", "Percentage Change") |> kable(digits 
 #| echo: false
 #| message: false
 
+# Changing the names on the graph legend
+percentage_change_data$crime <- factor(percentage_change_data$crime,
+                                             levels = c("assault", "autotheft", "biketheft", "breakenter", "homicide", "robbery", "shooting", "theftfrommv", "theftover"),
+                                             labels = c("Assault", "Auto Theft", "Bike Theft", "Break and Enter", "Homicide", "Robbery", "Shooting", "Theft from Motor Vehicle", "Theft over"))
+
 # Creating the line graph for percentage changes
 ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crime)) +
   geom_line() +
@@ -150,7 +160,7 @@ ggplot(percentage_change_data, aes(x = year, y = percentage_change, color = crim
   theme_minimal()
 ```
 
-# Discussion
+# Discussion {#sec-discussion}
 
 Overall, the data reveals that there is a significant upward trend in crime rates, more particularly in homicide and auto theft rates. The data indicates an over 210% increase in homicide rates with a more notable spike of 180% in the last year. Similarly, we have auto theft rising by 20% from last year. If we were to factor in all of the crime rates in our data set, the overall crime rate increase in the last year is about ~32%. These findings are in alignment with recent reports from various news outlets that suggest a growing trend in criminal activity. The [National Post](https://nationalpost.com/news/canada/violent-crime-rose-again-in-2022-murder-rate-highest-in-30-years-statcan) stating 'murder rate highest in 30 years' [@citearticle3], [CP24](https://www.cp24.com/news/toronto-saw-15-per-cent-increase-in-its-violent-crime-index-in-2022-more-than-three-times-the-jump-seen-nationally-statscan-1.6498269?cache=yesclipId10406200text%2Fhtml%3Bcharset%3Dutf-80404%2F7.258454%2F7.632243%2F7.243626%2F7.243626%2F7.243626) claiming that 'Toronto saw 15 percent increase in its violent crime index in 2022' [@citearticle1], or the [CBC](https://www.cbc.ca/news/canada/toronto/auto-theft-stories-toronto-2023-1.7060776#:~:text=In%20Toronto%20proper%2C%20vehicle%20thefts,jump%20in%202022%20from%202021.) saying that 'vehicle thefts were up some 25.4 percent over 2022' [@citearticle2]. An interesting caveat in the data is that there is a noticeable decrease in crime rates when looking from 2020-2021. Global events like COVID-19 could have influenced these trends. 
 
@@ -160,7 +170,7 @@ This increase in crime rate calls for an urgent review of our current crime prev
 
 There are several limitations to this analysis and it is important to acknowledge these limitations of our analysis. A major limitation in our analysis is that this data only accounts for reported crime. While trying to factor in unreported crime is deemed to be beyond the scope of this paper, it is important to highlight that our data set may not capture unreported crime incidents. By extension, the argument could also be made that the 'increase' in crime rate could be because of a more efficient crime reporting system or changes in the legal definitions of certain crimes. Another limitation is that the raw data set listed some crime rates as 'NA'. This can cause our data to be skewed in certain places and could potentially mislead our findings. 
 
-# Conclusion
+# Conclusion {#sec-conclusion}
 
 This paper investigated the crime rates over the years in Toronto taking into account the 158 different neighborhoods in Toronto. My results reveal that there was an increase in crime rate overall over the years, with crimes such as homicide and auto theft having the more notable and concerning increases. However, these results don't necessarily imply causation, but rather a high correlation that warrants a deeper investigation. Future research should be aimed to explore the factors as to why this increase is happening and why these trends are occurring. Whether it be to examine the current effectiveness of various crime prevention strategies or to monitor ongoing crimes to provide a better understanding of the nature of the crime which can be crucial to implementing a timely and effective response. Having strong law enforcement is crucial for ensuring the safety of the general public and to make sure new and repeat offenders are dealt with by justice. 
 
