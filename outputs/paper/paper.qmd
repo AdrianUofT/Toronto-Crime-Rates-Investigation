@@ -56,7 +56,7 @@ Other types of crime are not represented in this data set and are deemed to be o
 #| warning: false
 
 
-head(cleaned_crime_rates_data) |> kable(col.names = c("Crime", "Year", "Crime Rate"))
+head(cleaned_crime_rates_data) |> kable(col.names = c("Crime", "Year", "Crime Rate"), digits = 2)
 ```
 
 ## Average Crime Rate
@@ -71,7 +71,7 @@ Using the cleaned crime rate data set, I created a script using the `group_by` f
 #| warning: false
 
 
-head(average_crime_rates_per_year) |> kable(col.names = c("Crime", "Year", "Average Crime Rate"))
+head(average_crime_rates_per_year) |> kable(col.names = c("Crime", "Year", "Average Crime Rate"), digits = 2)
 ```
 
 # Results
@@ -120,7 +120,7 @@ Using the `mutate` function, I was able to calculate the percentage change on a 
 
 colnames(final_percentage_change_table) <- c("X", "Crime", "Percentage Change")
 
-final_percentage_change_table |> select("Crime", "Percentage Change") |> kable()
+final_percentage_change_table |> select("Crime", "Percentage Change") |> kable(digits = 2)
 ```
 
 ```{r}
@@ -131,7 +131,7 @@ final_percentage_change_table |> select("Crime", "Percentage Change") |> kable()
 #| warning: false
 
 colnames(percentage_change_table) <- c("X", "Crime", "Percentage Change")
-percentage_change_table |> select("Crime", "Percentage Change") |> kable()
+percentage_change_table |> select("Crime", "Percentage Change") |> kable(digits = 2)
 ```
 
 ```{r}

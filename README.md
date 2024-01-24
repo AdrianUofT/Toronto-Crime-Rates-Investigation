@@ -2,10 +2,10 @@
 
 **Statement on LLM usage: Aspects of the code were written with the help of ChatGPT. The README you are currently reading were written with the help of ChatGPT and the entire chat history is available in `inputs/llms/usage.txt`**
 
-# Overview
+## Overview
 This repository contains the work of our investigation into the crime rates in Toronto. Our goal was to analyze various types of crime data from the years 2014 to 2023 to identify trends and draw conclusions about the safety and security in Toronto.
 
-# Data Source
+## Data Source
 The dataset was sourced from a publicly available database (link to the dataset), providing detailed information on different types of crimes reported in Toronto.
 
 # Methodology
@@ -29,7 +29,7 @@ Our findings provide insights into the crime trends in Toronto. Detailed conclus
 * R Language: For data cleaning, manipulation, simulation, testing, and analysis.
 * R Libraries: Key packages like dplyr, tidyverse, opendatatoronto, lubridate, janitor, and knitr were extensively used for efficient data handling and visualization.
 # Repository Structure
-* /inputs/skteches: Contains sketches for the datasets.
+* /inputs/sketches: Contains sketches for the datasets.
 * /inputs/data: Contains raw and simulated datasets.
 * /inputs/llm: Contains LLM usage.
 * /outputs/data: Contains cleaned datasets.
